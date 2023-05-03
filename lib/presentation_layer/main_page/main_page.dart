@@ -87,13 +87,19 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           ),
         ),
       ),
-      body: Center(
-        child: Container(
-          width: 300,
-          height: 400,
-          color: Colors.yellow,
-          child:
-              Center(child: Text(context.watch<StoreTypeCubit>().state.name)),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                width: 300,
+                height: 400,
+                color: Colors.yellow,
+                child: Center(
+                    child: Text(context.watch<StoreTypeCubit>().state.name)),
+              ),
+            ),
+          ],
         ),
       ),
     );

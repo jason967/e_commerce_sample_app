@@ -1,7 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:sample_app/domain_layer/repository/place_holder.dart';
+import 'package:sample_app/domain_layer/usecase/place_holder.usecase.dart';
+import 'package:sample_app/domain_layer/usecase/place_holder/get_post_by_id.usecase.dart';
+
+import 'package:sample_app/injection.dart';
 import 'package:sample_app/presentation_layer/main_page/main_page.dart';
 
-void main() {
+void main() async {
+  initDependencyInjection();
+  final data =
+      await serviceLocater<PlaceHolderRepository>().getPostById(id: '1');
+  final usecase =
+      await serviceLocater<PlaceHolderUsecase>().fetch(GetPostById(id: '0'));
+
+  log('[test] data : $usecase');
   runApp(const MyApp());
 }
 
