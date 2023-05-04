@@ -1,5 +1,4 @@
-import '../../model/post/post.model.dart';
-
+import '../../model/place_holder_sample/post/post.model.dart';
 import '../../repository/place_holder.dart';
 
 import '../base_usecase/remote.usecase.dart';
