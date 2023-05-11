@@ -19,7 +19,7 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
   final DisplayUsecase _displayUsecase;
   ViewModulesBloc(this._displayUsecase) : super(ViewModulesState()) {
     on<ViewModulesInitialized>(_onViewmodulesIntialized);
-    on<ViewModulesChanged>(_onViewmodulesChanged);
+    on<ViewModulesFetched>(_onViewmodulesFetched);
   }
 
   Future<void> _onViewmodulesIntialized(
@@ -30,22 +30,27 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
     try {
       final storeType = event.storeType ?? StoreType.market;
       final tabId = event.tabId ?? 10001;
-
+      Map<int, List<ViewModule>> viewModules = {};
       final List<ViewModule> response = await _displayUsecase.fetch(
         GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
       );
-      final Map<int, List<ViewModule>> viewModules = {tabId: response};
+
+      viewModules[tabId] = response;
       await Future.delayed(const Duration(seconds: 3));
 
-      emit(state.copyWith(status: Status.success, viewModules: viewModules));
+      emit(state.copyWith(
+        status: Status.success,
+        viewModules: viewModules,
+        storeType: storeType,
+      ));
     } catch (error) {
       emit(state.copyWith(status: Status.error));
       log('[error] $error');
     }
   }
 
-  Future<void> _onViewmodulesChanged(
-    ViewModulesChanged event,
+  Future<void> _onViewmodulesFetched(
+    ViewModulesFetched event,
     Emitter<ViewModulesState> emit,
   ) async {
     final storeType = state.storeType;
@@ -61,10 +66,11 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
           GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
         );
         modules[tabId] = response;
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(milliseconds: 500));
         emit(state.copyWith(status: Status.success, viewModules: modules));
       } catch (error) {
         emit(state.copyWith(status: Status.error));
+        log('[error] $error');
       }
     }
   }

@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain_layer/model/display/view_module/view_module.model.dart';
 import '../bloc/common/constant.dart';
 import '../bloc/view_modules_bloc/view_modules_bloc.dart';
 
@@ -27,7 +28,6 @@ class ViewModuleList extends StatelessWidget {
     return BlocBuilder<ViewModulesBloc, ViewModulesState>(
       builder: (context, state) {
         final viewModules = state.viewModules;
-
         switch (state.status) {
           case Status.initial:
             return const LoadingViewModuleList();
@@ -51,7 +51,6 @@ class ViewModuleList extends StatelessWidget {
                     .toList(),
               ),
             );
-            ;
           case Status.error:
             return const LoadingViewModuleList();
         }

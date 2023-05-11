@@ -27,11 +27,16 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   ) async {
     emit(state.copyWith(status: Status.loading));
     try {
-      final storeType = event.storeType;
-      final List<Collection> collections = await _displayUsecase.fetch(
-          GetCollectionsByStoreType(storeType: storeType ?? StoreType.market));
-      await Future.delayed(const Duration(seconds: 3));
-      emit(state.copyWith(status: Status.success, collections: collections));
+      final storeType = event.storeType ?? StoreType.market;
+      final List<Collection> collections = await _displayUsecase
+          .fetch(GetCollectionsByStoreType(storeType: storeType));
+      await Future.delayed(const Duration(seconds: 1));
+      emit(
+        state.copyWith(
+            status: Status.success,
+            storeType: storeType,
+            collections: collections),
+      );
     } catch (error) {
       emit(state.copyWith(status: Status.initial));
       log('[error] $error');

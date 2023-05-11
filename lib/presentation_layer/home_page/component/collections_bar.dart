@@ -2,13 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sample_app/presentation_layer/common/bloc/store_type_cubit/store_type_cubit.dart';
 import 'package:sample_app/presentation_layer/home_page/bloc/view_modules_bloc/view_modules_bloc.dart';
 import 'package:sample_app/presentation_layer/home_page/component/view_module_list.dart';
 
 import '../../../domain_layer/model/display/collection/collection.model.dart';
 
 class CollectionsBar extends StatefulWidget {
-  const CollectionsBar(this.collections, {super.key});
+  const CollectionsBar({
+    required this.storeType,
+    required this.collections,
+    super.key,
+  });
+  final StoreType storeType;
   final List<Collection> collections;
 
   @override
@@ -28,9 +34,18 @@ class _CollectionsBarState extends State<CollectionsBar>
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         final tabId = widget.collections[_tabController.index].tabId;
-        context.read<ViewModulesBloc>().add(ViewModulesChanged(tabId: tabId));
+        context.read<ViewModulesBloc>().add(ViewModulesFetched(tabId: tabId));
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    context.read<ViewModulesBloc>().add(ViewModulesInitialized(
+          storeType: widget.storeType,
+          tabId: widget.collections.first.tabId,
+        ));
+    super.didChangeDependencies();
   }
 
   @override
@@ -47,7 +62,6 @@ class _CollectionsBarState extends State<CollectionsBar>
           height: 60,
           child: TabBar(
               controller: _tabController,
-              onTap: (index) {},
               tabs: widget.collections.map((e) => GnbTab(e.title)).toList()),
         ),
         Expanded(
