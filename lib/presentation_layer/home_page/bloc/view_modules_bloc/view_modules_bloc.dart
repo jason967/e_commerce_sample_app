@@ -19,6 +19,7 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
   final DisplayUsecase _displayUsecase;
   ViewModulesBloc(this._displayUsecase) : super(ViewModulesState()) {
     on<ViewModulesInitialized>(_onViewmodulesIntialized);
+    on<ViewModulesChanged>(_onViewmodulesChanged);
   }
 
   Future<void> _onViewmodulesIntialized(
@@ -38,8 +39,33 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
 
       emit(state.copyWith(status: Status.success, viewModules: viewModules));
     } catch (error) {
-      emit(state.copyWith(status: Status.initial));
+      emit(state.copyWith(status: Status.error));
       log('[error] $error');
+    }
+  }
+
+  Future<void> _onViewmodulesChanged(
+    ViewModulesChanged event,
+    Emitter<ViewModulesState> emit,
+  ) async {
+    final storeType = state.storeType;
+    final tabId = event.tabId ?? 10001;
+
+    Map<int, List<ViewModule>> modules = {...state.viewModules};
+
+    if (modules[tabId] == null) {
+      try {
+        emit(state.copyWith(status: Status.loading));
+
+        final List<ViewModule> response = await _displayUsecase.fetch(
+          GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
+        );
+        modules[tabId] = response;
+        await Future.delayed(const Duration(seconds: 1));
+        emit(state.copyWith(status: Status.success, viewModules: modules));
+      } catch (error) {
+        emit(state.copyWith(status: Status.error));
+      }
     }
   }
 }

@@ -9,3 +9,9 @@ class ViewModulesInitialized extends ViewModulesEvent {
   final StoreType? storeType;
   final int? tabId;
 }
+
+class ViewModulesChanged extends ViewModulesEvent {
+  ViewModulesChanged({this.tabId});
+  // final StoreType? storeType;
+  final int? tabId;
+}

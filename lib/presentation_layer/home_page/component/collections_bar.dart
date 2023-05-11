@@ -6,7 +6,6 @@ import 'package:sample_app/presentation_layer/home_page/bloc/view_modules_bloc/v
 import 'package:sample_app/presentation_layer/home_page/component/view_module_list.dart';
 
 import '../../../domain_layer/model/display/collection/collection.model.dart';
-import '../bloc/common/constant.dart';
 
 class CollectionsBar extends StatefulWidget {
   const CollectionsBar(this.collections, {super.key});
@@ -25,6 +24,13 @@ class _CollectionsBarState extends State<CollectionsBar>
     super.initState();
     _tabController =
         TabController(length: widget.collections.length, vsync: this);
+
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        final tabId = widget.collections[_tabController.index].tabId;
+        context.read<ViewModulesBloc>().add(ViewModulesChanged(tabId: tabId));
+      }
+    });
   }
 
   @override
@@ -35,66 +41,43 @@ class _CollectionsBarState extends State<CollectionsBar>
 
   @override
   Widget build(BuildContext context) {
-    log('[test] test : ${widget.collections}');
     return Column(
       children: [
         SizedBox(
           height: 60,
           child: TabBar(
               controller: _tabController,
-              tabs: widget.collections
-                  .map((e) => Tab(
-                        child: Text(
-                          e.title,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ))
-                  .toList()),
+              onTap: (index) {},
+              tabs: widget.collections.map((e) => GnbTab(e.title)).toList()),
         ),
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [
-              BlocBuilder<ViewModulesBloc, ViewModulesState>(
-                builder: (context, state) {
-                  final viewModules = state.viewModules;
-
-                  switch (state.status) {
-                    case Status.initial:
-                      return const LoadingViewModuleList();
-                    case Status.loading:
-                      return const LoadingViewModuleList();
-                    case Status.success:
-                      return ViewModuleList(viewModules[10001] ?? []);
-                    case Status.error:
-                      return const LoadingViewModuleList();
-                  }
-                },
-              ),
-              Container(
-                height: 400,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 400,
-                color: Colors.yellow,
-              ),
-              Container(
-                height: 400,
-                color: Colors.green,
-              ),
-              Container(
-                height: 400,
-                color: Colors.blue,
-              ),
-            ],
+            children: widget.collections
+                .map((e) => ViewModuleList(tabId: e.tabId))
+                .toList(),
           ),
         )
       ],
+    );
+  }
+}
+
+class GnbTab extends StatelessWidget {
+  const GnbTab(this.text, {super.key});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 }

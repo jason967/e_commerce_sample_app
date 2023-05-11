@@ -20,8 +20,8 @@ const testColors = [
 ];
 
 class ViewModuleList extends StatelessWidget {
-  const ViewModuleList(this.viewModules, {super.key});
-  final List<ViewModule> viewModules;
+  const ViewModuleList({required this.tabId, super.key});
+  final int tabId;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ViewModulesBloc, ViewModulesState>(
@@ -36,7 +36,7 @@ class ViewModuleList extends StatelessWidget {
           case Status.success:
             return SingleChildScrollView(
               child: Column(
-                children: (viewModules[10001] ?? [])
+                children: (viewModules[tabId] ?? [])
                     .asMap()
                     .entries
                     .map(
