@@ -1,5 +1,5 @@
 import '../../model/place_holder_sample/user/user.model.dart';
-import '../../repository/place_holder.dart';
+import '../../repository/place_holder.repository.dart';
 
 import '../base_usecase/remote.usecase.dart';
 

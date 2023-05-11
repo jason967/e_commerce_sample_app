@@ -2,7 +2,7 @@
 import '../data_source/remote/place_holder_api_sample.dart';
 
 /// Interface
-import '../../domain_layer/repository/place_holder.dart';
+import '../../domain_layer/repository/place_holder.repository.dart';
 
 /// Model & Mapper
 import 'package:sample_app/data_layer/common/mapper/place_holder.mapper.dart';

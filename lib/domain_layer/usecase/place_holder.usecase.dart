@@ -1,4 +1,4 @@
-import '../repository/place_holder.dart';
+import '../repository/place_holder.repository.dart';
 import 'base_usecase/remote.usecase.dart';
 
 class PlaceHolderUsecase {

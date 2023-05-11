@@ -1,17 +1,24 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:sample_app/domain_layer/usecase/place_holder.usecase.dart';
-import 'package:sample_app/domain_layer/usecase/place_holder/get_users.usecase.dart';
+
+import 'package:sample_app/domain_layer/usecase/display.usecase.dart';
+
+import 'package:sample_app/domain_layer/usecase/display/get_view_modules_by_store_type_and_tab_id.usecase.dart';
 
 import 'package:sample_app/injection.dart';
+import 'package:sample_app/presentation_layer/common/bloc/store_type_cubit/store_type_cubit.dart';
 
 import 'presentation_layer/main_page.dart';
 
 void main() async {
   initDependencyInjection();
+  final test = await serviceLocater<DisplayUsecase>().fetch(
+      GetViewModulesByStoreTypeAndTabId(
+          storeType: StoreType.market, tabId: 10001));
+
   // final sample = await serviceLocater<PlaceHolderUsecase>().fetch(GetUsers());
-  // log('[test] sample : $sample');
+  log('[test] test : $test');
   runApp(const MyApp());
 }
 

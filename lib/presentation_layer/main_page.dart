@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sample_app/presentation_layer/common/component/app_bar/home_app_bar.dart';
+
 import 'package:sample_app/presentation_layer/common/component/app_bar/top_app_bar.dart';
 import 'package:sample_app/presentation_layer/home_page/home_page.dart';
 import 'package:sample_app/presentation_layer/user_page_sample/user_page.dart';
@@ -49,7 +47,6 @@ class MainView extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         onTap: context.read<BottomNavigationCubit>().changeBottomType,
         currentIndex: context.watch<BottomNavigationCubit>().state.index,
-        backgroundColor: Colors.orange,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
