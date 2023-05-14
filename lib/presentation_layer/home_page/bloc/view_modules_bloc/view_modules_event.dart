@@ -12,6 +12,5 @@ class ViewModulesInitialized extends ViewModulesEvent {
 
 class ViewModulesFetched extends ViewModulesEvent {
   ViewModulesFetched({this.tabId});
-  // final StoreType? storeType;
   final int? tabId;
 }

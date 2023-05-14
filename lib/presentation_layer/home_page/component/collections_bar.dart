@@ -32,15 +32,17 @@ class _CollectionsBarState extends State<CollectionsBar>
         TabController(length: widget.collections.length, vsync: this);
 
     _tabController.addListener(() {
-      if (!_tabController.indexIsChanging) {
-        final tabId = widget.collections[_tabController.index].tabId;
-        context.read<ViewModulesBloc>().add(ViewModulesFetched(tabId: tabId));
-      }
+      // if (!_tabController.indexIsChanging) {
+      final tabId = widget.collections[_tabController.index].tabId;
+      log('[test] init state : $tabId');
+      context.read<ViewModulesBloc>().add(ViewModulesFetched(tabId: tabId));
+      // }
     });
   }
 
   @override
   void didChangeDependencies() {
+    log('[test] did');
     context.read<ViewModulesBloc>().add(ViewModulesInitialized(
           storeType: widget.storeType,
           tabId: widget.collections.first.tabId,

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sample_app/domain_layer/usecase/display.usecase.dart';
@@ -19,7 +20,7 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
   final DisplayUsecase _displayUsecase;
   ViewModulesBloc(this._displayUsecase) : super(ViewModulesState()) {
     on<ViewModulesInitialized>(_onViewmodulesIntialized);
-    on<ViewModulesFetched>(_onViewmodulesFetched);
+    on<ViewModulesFetched>(_onViewmodulesFetched, transformer: restartable());
   }
 
   Future<void> _onViewmodulesIntialized(
@@ -58,20 +59,24 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
 
     Map<int, List<ViewModule>> modules = {...state.viewModules};
 
+    log('[test] fetch ${modules[tabId]}');
     if (modules[tabId] == null) {
       try {
         emit(state.copyWith(status: Status.loading));
-
+        // log('[test] init!');
         final List<ViewModule> response = await _displayUsecase.fetch(
           GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
         );
         modules[tabId] = response;
-        await Future.delayed(const Duration(milliseconds: 500));
+        // await Future.delayed(const Duration(milliseconds: 500));
         emit(state.copyWith(status: Status.success, viewModules: modules));
       } catch (error) {
         emit(state.copyWith(status: Status.error));
         log('[error] $error');
       }
+    } else {
+      log('[test] fetch 안됌');
+      emit(state.copyWith(status: Status.success, viewModules: modules));
     }
   }
 }

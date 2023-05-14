@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sample_app/domain_layer/model/display.model.dart';
 
 import '../bloc/common/constant.dart';
 import '../bloc/view_modules_bloc/view_modules_bloc.dart';
@@ -34,9 +35,10 @@ class ViewModuleList extends StatelessWidget {
           case Status.loading:
             return const LoadingViewModuleList();
           case Status.success:
+            log('[test] view : ${viewModules[tabId]}');
             return SingleChildScrollView(
               child: Column(
-                children: (viewModules[tabId] ?? [])
+                children: (viewModules[tabId] ?? [ViewModule(type: 'disble')])
                     .asMap()
                     .entries
                     .map(
