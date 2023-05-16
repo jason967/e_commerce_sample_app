@@ -17,16 +17,6 @@ enum StoreType { market, beauty }
 
 enum CollectionsStatus { initial, loading, success, failure }
 
-extension CollectionsStatusEx on CollectionsStatus {
-  bool get isInitial => this == CollectionsStatus.initial;
-
-  bool get isLoading => this == CollectionsStatus.loading;
-
-  bool get isSuccess => this == CollectionsStatus.success;
-
-  bool get isFailure => this == CollectionsStatus.failure;
-}
-
 class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   final DisplayUsecase _displayUsecase;
 
@@ -48,7 +38,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       final List<Collection> collections =
           await _fetchCollections(initializedStoreType);
 
-      if(collections.isEmpty){
+      if (collections.isEmpty) {
         emit(state.copyWith(status: CollectionsStatus.failure));
         return;
       }
@@ -69,20 +59,20 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       ToggledStoreTypes event, Emitter<CollectionsState> emit) async {
     final currentStoreType = StoreType.values[event.tabIndex];
 
-    // log('[test]  CollectionsStatus : ${state.status},   currentStoreType : $currentStoreType ');
     if (!state.status.isSuccess) return;
     emit(state.copyWith(status: CollectionsStatus.loading));
     try {
       final List<Collection> collections =
           await _fetchCollections(currentStoreType);
 
-      if(collections.isEmpty){
+      if (collections.isEmpty) {
         emit(state.copyWith(status: CollectionsStatus.failure));
         return;
       }
       emit(
         state.copyWith(
           status: CollectionsStatus.success,
+          storeType: currentStoreType,
           collections: collections,
         ),
       );
@@ -96,8 +86,16 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     final response = await _displayUsecase
         .fetch(GetCollectionsByStoreType(storeType: storeType));
 
-    await Future.delayed(const Duration(seconds: 1));
-
     return response;
   }
+}
+
+extension CollectionsStatusEx on CollectionsStatus {
+  bool get isInitial => this == CollectionsStatus.initial;
+
+  bool get isLoading => this == CollectionsStatus.loading;
+
+  bool get isSuccess => this == CollectionsStatus.success;
+
+  bool get isFailure => this == CollectionsStatus.failure;
 }

@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sample_app/domain_layer/usecase/display.usecase.dart';
@@ -39,19 +38,16 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
       return;
     }
 
-    // 초기화
-    List<ViewModulesStatus> initializedStatus = [
-      ...collections.map((e) => ViewModulesStatus.initial)
+    // 첫번째(홈) 인 경우는 loading 초기화
+    final List<ViewModulesStatus> initializedStatus = [
+      ViewModulesStatus.loading,
+      ...collections.skip(1).map((e) => ViewModulesStatus.initial)
     ];
 
-    // 첫번째(홈) 인 경우는 loading 초기화
-    initializedStatus.first = ViewModulesStatus.loading;
-
     // viewModules 초기화
-    Map<int, List<ViewModule>> initializedViewModules = {};
-    for (final collection in collections) {
-      initializedViewModules[collection.tabId] = [];
-    }
+    final Map<int, List<ViewModule>> initializedViewModules = {
+      for (final collection in collections) collection.tabId: []
+    };
 
     emit(
       state.copyWith(
@@ -66,17 +62,21 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
       final List<ViewModule> response = await _displayUsecase.fetch(
         GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
       );
-      List<ViewModulesStatus> test = [...initializedStatus];
-      // test.first = ViewModulesStatus.success;
+
+      final List<ViewModulesStatus> status = [...state.status];
+      status[0] = ViewModulesStatus.success;
+
+      final Map<int, List<ViewModule>> viewModules = {...state.viewModules};
+      viewModules[tabId] = response;
+
       //TODO call by ref 여기 확인해봐야함
-      initializedStatus.first = ViewModulesStatus.success;
-      initializedViewModules[tabId] = response;
+      // initializedStatus.first = ViewModulesStatus.success;
 
       emit(state.copyWith(
         storeType: storeType,
         collections: collections,
-        status: test,
-        viewModules: initializedViewModules,
+        status: status,
+        viewModules: viewModules,
       ));
     } catch (error) {
       emit(state.copyWith(status: [ViewModulesStatus.failure]));
@@ -95,36 +95,28 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
 
     if (tabIndex >= collections.length) return;
 
-    List<ViewModulesStatus> status = [...state.status];
     Map<int, List<ViewModule>> viewModules = {...state.viewModules};
-    // print('[test] ${status[tabIndex]}');
-    // print('[test] ${viewModules[tabId]}');
-    // if(viewModules[tabId]?.isNotEmpty ?? false) return;
-    // if(!status[tabIndex].isSuccess && viewModules[tabId]!.isNotEmpty) return;
-    // print('[test] 넘어옴?');
-    try {
-      status[tabIndex] = ViewModulesStatus.loading;
-      emit(state.copyWith(status: status, currentIndex: tabIndex));
+    if (viewModules[tabId]?.isNotEmpty ?? false) return;
 
+    List<ViewModulesStatus> statusLoading = [...state.status]..[tabIndex] =
+        ViewModulesStatus.loading;
+
+    emit(state.copyWith(status: statusLoading));
+
+    try {
       final storeType = state.storeType;
 
       final List<ViewModule> response = await _displayUsecase.fetch(
         GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
       );
 
-      // status[tabIndex] = ViewModulesStatus.success;
-
-      List<ViewModulesStatus> test = [...status];
-      test[tabIndex] = ViewModulesStatus.success;
+      List<ViewModulesStatus> statusSuccess = [...state.status]..[tabIndex]=ViewModulesStatus.success;
 
       viewModules[tabId] = response;
 
-      print('[test] tabIndex = $tabIndex, tabId : $tabId, ');
-      emit(state.copyWith(status: test, viewModules: viewModules));
-      print('[test] finished');
+      emit(state.copyWith(status: statusSuccess, viewModules: viewModules));
     } catch (error) {
-      status[tabIndex] = ViewModulesStatus.failure;
-      emit(state.copyWith(status: status));
+      emit(state.copyWith(status: [ViewModulesStatus.failure]));
       log('[error] $error');
     }
   }

@@ -56,7 +56,6 @@ class _CollectionsBarViewState extends State<CollectionsBarView>
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         final tabIndex = _tabController.index;
-        print('[test] 탭 변경');
         context
             .read<ViewModulesBloc>()
             .add(ViewModulesFetched(tabIndex: tabIndex));

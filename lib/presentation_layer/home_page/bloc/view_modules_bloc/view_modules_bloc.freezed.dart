@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ViewModulesState {
   StoreType get storeType => throw _privateConstructorUsedError;
-  int get currentIndex => throw _privateConstructorUsedError;
   List<Collection> get collections => throw _privateConstructorUsedError;
   List<ViewModulesStatus> get status => throw _privateConstructorUsedError;
   Map<int, List<ViewModule>> get viewModules =>
@@ -36,7 +35,6 @@ abstract class $ViewModulesStateCopyWith<$Res> {
   @useResult
   $Res call(
       {StoreType storeType,
-      int currentIndex,
       List<Collection> collections,
       List<ViewModulesStatus> status,
       Map<int, List<ViewModule>> viewModules});
@@ -56,7 +54,6 @@ class _$ViewModulesStateCopyWithImpl<$Res, $Val extends ViewModulesState>
   @override
   $Res call({
     Object? storeType = null,
-    Object? currentIndex = null,
     Object? collections = null,
     Object? status = null,
     Object? viewModules = null,
@@ -66,10 +63,6 @@ class _$ViewModulesStateCopyWithImpl<$Res, $Val extends ViewModulesState>
           ? _value.storeType
           : storeType // ignore: cast_nullable_to_non_nullable
               as StoreType,
-      currentIndex: null == currentIndex
-          ? _value.currentIndex
-          : currentIndex // ignore: cast_nullable_to_non_nullable
-              as int,
       collections: null == collections
           ? _value.collections
           : collections // ignore: cast_nullable_to_non_nullable
@@ -96,7 +89,6 @@ abstract class _$$_ViewModulesStateCopyWith<$Res>
   @useResult
   $Res call(
       {StoreType storeType,
-      int currentIndex,
       List<Collection> collections,
       List<ViewModulesStatus> status,
       Map<int, List<ViewModule>> viewModules});
@@ -114,7 +106,6 @@ class __$$_ViewModulesStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? storeType = null,
-    Object? currentIndex = null,
     Object? collections = null,
     Object? status = null,
     Object? viewModules = null,
@@ -124,10 +115,6 @@ class __$$_ViewModulesStateCopyWithImpl<$Res>
           ? _value.storeType
           : storeType // ignore: cast_nullable_to_non_nullable
               as StoreType,
-      currentIndex: null == currentIndex
-          ? _value.currentIndex
-          : currentIndex // ignore: cast_nullable_to_non_nullable
-              as int,
       collections: null == collections
           ? _value._collections
           : collections // ignore: cast_nullable_to_non_nullable
@@ -149,7 +136,6 @@ class __$$_ViewModulesStateCopyWithImpl<$Res>
 class _$_ViewModulesState implements _ViewModulesState {
   _$_ViewModulesState(
       {this.storeType = StoreType.market,
-      this.currentIndex = 0,
       final List<Collection> collections = const <Collection>[],
       final List<ViewModulesStatus> status = const <ViewModulesStatus>[
         ViewModulesStatus.initial
@@ -163,9 +149,6 @@ class _$_ViewModulesState implements _ViewModulesState {
   @override
   @JsonKey()
   final StoreType storeType;
-  @override
-  @JsonKey()
-  final int currentIndex;
   final List<Collection> _collections;
   @override
   @JsonKey()
@@ -195,7 +178,7 @@ class _$_ViewModulesState implements _ViewModulesState {
 
   @override
   String toString() {
-    return 'ViewModulesState(storeType: $storeType, currentIndex: $currentIndex, collections: $collections, status: $status, viewModules: $viewModules)';
+    return 'ViewModulesState(storeType: $storeType, collections: $collections, status: $status, viewModules: $viewModules)';
   }
 
   @override
@@ -205,8 +188,6 @@ class _$_ViewModulesState implements _ViewModulesState {
             other is _$_ViewModulesState &&
             (identical(other.storeType, storeType) ||
                 other.storeType == storeType) &&
-            (identical(other.currentIndex, currentIndex) ||
-                other.currentIndex == currentIndex) &&
             const DeepCollectionEquality()
                 .equals(other._collections, _collections) &&
             const DeepCollectionEquality().equals(other._status, _status) &&
@@ -218,7 +199,6 @@ class _$_ViewModulesState implements _ViewModulesState {
   int get hashCode => Object.hash(
       runtimeType,
       storeType,
-      currentIndex,
       const DeepCollectionEquality().hash(_collections),
       const DeepCollectionEquality().hash(_status),
       const DeepCollectionEquality().hash(_viewModules));
@@ -233,15 +213,12 @@ class _$_ViewModulesState implements _ViewModulesState {
 abstract class _ViewModulesState implements ViewModulesState {
   factory _ViewModulesState(
       {final StoreType storeType,
-      final int currentIndex,
       final List<Collection> collections,
       final List<ViewModulesStatus> status,
       final Map<int, List<ViewModule>> viewModules}) = _$_ViewModulesState;
 
   @override
   StoreType get storeType;
-  @override
-  int get currentIndex;
   @override
   List<Collection> get collections;
   @override

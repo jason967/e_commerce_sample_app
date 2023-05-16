@@ -4,7 +4,6 @@ part of 'view_modules_bloc.dart';
 class ViewModulesState with _$ViewModulesState {
   factory ViewModulesState({
     @Default(StoreType.market) StoreType storeType,
-    @Default(0) int currentIndex,
     @Default(<Collection>[]) List<Collection> collections,
     @Default(<ViewModulesStatus>[ViewModulesStatus.initial]) List<ViewModulesStatus> status,
     @Default(<int,List<ViewModule>>{}) Map<int,List<ViewModule>> viewModules,

@@ -25,7 +25,6 @@ class ViewModuleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[test]------normal-------- $tabIndex --------------');
     return BlocBuilder<ViewModulesBloc, ViewModulesState>(
       builder: (context, state) {
         final viewModules = state.viewModules;
@@ -33,14 +32,11 @@ class ViewModuleList extends StatelessWidget {
         final collections = state.collections;
         switch (status) {
           case ViewModulesStatus.initial:
-            log('[test] ------- loading ------------------ ');
             return const LoadingViewModuleList(Colors.green);
           case ViewModulesStatus.loading:
-            log('[test] ------- loading ------------------ ');
             return const LoadingViewModuleList(Colors.blue);
           case ViewModulesStatus.success:
             final tabId = collections[tabIndex].tabId;
-            log('[test] ------- success : $tabId ------------------ ');
             return SingleChildScrollView(
               child: Column(
                 children: (viewModules[tabId] ?? [])

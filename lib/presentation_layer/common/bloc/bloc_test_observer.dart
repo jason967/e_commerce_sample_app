@@ -12,7 +12,7 @@ class BlocTestObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    log('onChange -- ${bloc.runtimeType}, ${change.currentState}-->${change.nextState}');
+    log('onChange -- ${bloc.runtimeType},');
   }
 
   @override
