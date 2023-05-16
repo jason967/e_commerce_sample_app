@@ -1,6 +1,5 @@
 import 'package:sample_app/data_layer/dto/display.dto.dart';
 import 'package:sample_app/domain_layer/model/display.model.dart';
-import 'package:sample_app/domain_layer/model/display/view_module/view_module.model.dart';
 
 extension CollectionEx on CollectionDto {
   Collection toModel() {

@@ -1,6 +1,6 @@
 import 'package:sample_app/domain_layer/model/display/view_module/view_module.model.dart';
-import 'package:sample_app/presentation_layer/common/bloc/store_type_cubit/store_type_cubit.dart';
 
+import '../../../presentation_layer/home_page/bloc/collections_bloc/collections_bloc.dart';
 import '../base_usecase/remote.usecase.dart';
 
 import 'package:sample_app/domain_layer/repository/display.repository.dart';

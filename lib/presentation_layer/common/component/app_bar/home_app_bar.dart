@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../bloc/bottom_navigation_cubit/bottom_navigation_cubit.dart';
-import '../../bloc/store_type_cubit/store_type_cubit.dart';
+import 'package:sample_app/presentation_layer/home_page/bloc/collections_bloc/collections_bloc.dart';
 
 class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key});
@@ -52,7 +48,7 @@ class _HomeAppBarState extends State<HomeAppBar> with TickerProviderStateMixin {
         height: 34,
         child: TabBar(
           padding: const EdgeInsets.all(0),
-          onTap: context.read<StoreTypeCubit>().changeStoreType,
+          onTap: (tabIndex)=>context.read<CollectionsBloc>().add(ToggledStoreTypes(tabIndex)),
           indicatorWeight: 1,
           labelStyle: const TextStyle(
             fontSize: 15,

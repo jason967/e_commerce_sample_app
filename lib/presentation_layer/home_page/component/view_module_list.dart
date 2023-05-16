@@ -2,9 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sample_app/domain_layer/model/display.model.dart';
-
-import '../bloc/common/constant.dart';
 import '../bloc/view_modules_bloc/view_modules_bloc.dart';
 
 //Test 용 color map
@@ -22,23 +19,31 @@ const testColors = [
 ];
 
 class ViewModuleList extends StatelessWidget {
-  const ViewModuleList({required this.tabId, super.key});
-  final int tabId;
+  const ViewModuleList({required this.tabIndex, super.key});
+
+  final int tabIndex;
+
   @override
   Widget build(BuildContext context) {
+    print('[test]------normal-------- $tabIndex --------------');
     return BlocBuilder<ViewModulesBloc, ViewModulesState>(
       builder: (context, state) {
         final viewModules = state.viewModules;
-        switch (state.status) {
-          case Status.initial:
-            return const LoadingViewModuleList();
-          case Status.loading:
-            return const LoadingViewModuleList();
-          case Status.success:
-            log('[test] view : ${viewModules[tabId]}');
+        final status = state.status[tabIndex];
+        final collections = state.collections;
+        switch (status) {
+          case ViewModulesStatus.initial:
+            log('[test] ------- loading ------------------ ');
+            return const LoadingViewModuleList(Colors.green);
+          case ViewModulesStatus.loading:
+            log('[test] ------- loading ------------------ ');
+            return const LoadingViewModuleList(Colors.blue);
+          case ViewModulesStatus.success:
+            final tabId = collections[tabIndex].tabId;
+            log('[test] ------- success : $tabId ------------------ ');
             return SingleChildScrollView(
               child: Column(
-                children: (viewModules[tabId] ?? [ViewModule(type: 'disble')])
+                children: (viewModules[tabId] ?? [])
                     .asMap()
                     .entries
                     .map(
@@ -53,8 +58,10 @@ class ViewModuleList extends StatelessWidget {
                     .toList(),
               ),
             );
-          case Status.error:
-            return const LoadingViewModuleList();
+          case ViewModulesStatus.failure:
+            return const LoadingViewModuleList(Colors.red);
+          default:
+            return const LoadingViewModuleList(Colors.black);
         }
       },
     );
@@ -62,13 +69,17 @@ class ViewModuleList extends StatelessWidget {
 }
 
 class LoadingViewModuleList extends StatelessWidget {
-  const LoadingViewModuleList({super.key});
+  const LoadingViewModuleList(this.color, {super.key});
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 400,
-      child: Center(child: CircularProgressIndicator()),
+      child: Center(
+        child: CircularProgressIndicator(color: color),
+      ),
     );
   }
 }

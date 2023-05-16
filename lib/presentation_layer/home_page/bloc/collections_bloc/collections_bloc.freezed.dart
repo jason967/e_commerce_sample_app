@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CollectionsState {
-  Status get status => throw _privateConstructorUsedError;
+  CollectionsStatus get status => throw _privateConstructorUsedError;
   StoreType get storeType => throw _privateConstructorUsedError;
   List<Collection> get collections => throw _privateConstructorUsedError;
 
@@ -31,7 +31,10 @@ abstract class $CollectionsStateCopyWith<$Res> {
           CollectionsState value, $Res Function(CollectionsState) then) =
       _$CollectionsStateCopyWithImpl<$Res, CollectionsState>;
   @useResult
-  $Res call({Status status, StoreType storeType, List<Collection> collections});
+  $Res call(
+      {CollectionsStatus status,
+      StoreType storeType,
+      List<Collection> collections});
 }
 
 /// @nodoc
@@ -55,7 +58,7 @@ class _$CollectionsStateCopyWithImpl<$Res, $Val extends CollectionsState>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as Status,
+              as CollectionsStatus,
       storeType: null == storeType
           ? _value.storeType
           : storeType // ignore: cast_nullable_to_non_nullable
@@ -76,7 +79,10 @@ abstract class _$$_CollectionsStateCopyWith<$Res>
       __$$_CollectionsStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, StoreType storeType, List<Collection> collections});
+  $Res call(
+      {CollectionsStatus status,
+      StoreType storeType,
+      List<Collection> collections});
 }
 
 /// @nodoc
@@ -98,7 +104,7 @@ class __$$_CollectionsStateCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as Status,
+              as CollectionsStatus,
       storeType: null == storeType
           ? _value.storeType
           : storeType // ignore: cast_nullable_to_non_nullable
@@ -115,14 +121,14 @@ class __$$_CollectionsStateCopyWithImpl<$Res>
 
 class _$_CollectionsState implements _CollectionsState {
   _$_CollectionsState(
-      {this.status = Status.initial,
+      {this.status = CollectionsStatus.initial,
       this.storeType = StoreType.market,
       final List<Collection> collections = const <Collection>[]})
       : _collections = collections;
 
   @override
   @JsonKey()
-  final Status status;
+  final CollectionsStatus status;
   @override
   @JsonKey()
   final StoreType storeType;
@@ -165,12 +171,12 @@ class _$_CollectionsState implements _CollectionsState {
 
 abstract class _CollectionsState implements CollectionsState {
   factory _CollectionsState(
-      {final Status status,
+      {final CollectionsStatus status,
       final StoreType storeType,
       final List<Collection> collections}) = _$_CollectionsState;
 
   @override
-  Status get status;
+  CollectionsStatus get status;
   @override
   StoreType get storeType;
   @override

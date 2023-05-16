@@ -8,3 +8,8 @@ class CollectionsInitialized extends CollectionsEvent {
   CollectionsInitialized({this.storeType});
   final StoreType? storeType;
 }
+
+class ToggledStoreTypes extends CollectionsEvent{
+  ToggledStoreTypes(this.tabIndex);
+  final int tabIndex;
+}
