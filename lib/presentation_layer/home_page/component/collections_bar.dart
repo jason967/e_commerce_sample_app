@@ -76,7 +76,7 @@ class _CollectionsBarViewState extends State<CollectionsBarView>
         SizedBox(
           height: 60,
           child: TabBar(
-            onTap: (index){},
+              onTap: (index) {},
               controller: _tabController,
               tabs: widget.collections.map((e) => GnbTab(e.title)).toList()),
         ),

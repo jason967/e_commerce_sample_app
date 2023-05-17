@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('[test] ---------- home_page build ----------');
     return BlocBuilder<CollectionsBloc, CollectionsState>(
         builder: (context, state) {
       final collections = state.collections;

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sample_app/presentation_layer/home_page/bloc/collections_bloc/collections_bloc.dart';
+import 'package:sample_app/presentation_layer/home_page/bloc/home_page_bloc.dart';
 
 class BlocTestObserver extends BlocObserver {
   @override
@@ -12,7 +14,19 @@ class BlocTestObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    log('onChange -- ${bloc.runtimeType},');
+    if (bloc.runtimeType.toString() == 'CollectionsBloc') {
+      final current = (change.currentState as CollectionsState).status;
+      final next = (change.nextState as CollectionsState).status;
+
+      log('onChange -- ${bloc.runtimeType},'
+          '$current -> $next');
+    }else if(bloc.runtimeType.toString()=='ViewModulesBloc'){
+      final current = (change.currentState as ViewModulesState).status;
+      final next = (change.nextState as ViewModulesState).status;
+
+      log('onChange -- ${bloc.runtimeType},'
+          '$current -> $next');
+    }
   }
 
   @override

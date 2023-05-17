@@ -16,7 +16,6 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => BottomNavigationCubit()),
         BlocProvider(
             create: (_) => serviceLocater<CollectionsBloc>()
               ..add(CollectionsInitialized(storeType: StoreType.market))),
@@ -31,6 +30,8 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('[test] ---------- main_page build ----------');
+
     return Scaffold(
       appBar: TopAppBar(AppBar()),
       body: BlocBuilder<BottomNavigationCubit, BottomNavigation>(

@@ -60,7 +60,9 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     final currentStoreType = StoreType.values[event.tabIndex];
 
     if (!state.status.isSuccess) return;
-    emit(state.copyWith(status: CollectionsStatus.loading));
+    // if (state.collections.isEmpty) {
+      emit(state.copyWith(status: CollectionsStatus.loading));
+    // }
     try {
       final List<Collection> collections =
           await _fetchCollections(currentStoreType);
@@ -69,6 +71,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         emit(state.copyWith(status: CollectionsStatus.failure));
         return;
       }
+
       emit(
         state.copyWith(
           status: CollectionsStatus.success,

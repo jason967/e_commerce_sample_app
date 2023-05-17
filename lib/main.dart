@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sample_app/injection.dart';
 import 'package:sample_app/presentation_layer/common/bloc/bloc_test_observer.dart';
+import 'package:sample_app/presentation_layer/common/bloc/bottom_navigation_cubit/bottom_navigation_cubit.dart';
 
 import 'presentation_layer/main_page.dart';
 
@@ -22,7 +23,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: BlocProvider(
+          create: (_)=>BottomNavigationCubit(),
+          child: const MainPage()),
     );
   }
 }

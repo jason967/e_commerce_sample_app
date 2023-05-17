@@ -20,7 +20,12 @@ class _HomeAppBarState extends State<HomeAppBar> with TickerProviderStateMixin {
     )..addListener(_onChanged);
   }
 
-  void _onChanged() {}
+  void _onChanged() {
+    final tabIndex = _tabController.index;
+    if(!_tabController.indexIsChanging){
+      context.read<CollectionsBloc>().add(ToggledStoreTypes(tabIndex));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -48,7 +53,7 @@ class _HomeAppBarState extends State<HomeAppBar> with TickerProviderStateMixin {
         height: 34,
         child: TabBar(
           padding: const EdgeInsets.all(0),
-          onTap: (tabIndex)=>context.read<CollectionsBloc>().add(ToggledStoreTypes(tabIndex)),
+          onTap: (tabIndex){},
           indicatorWeight: 1,
           labelStyle: const TextStyle(
             fontSize: 15,

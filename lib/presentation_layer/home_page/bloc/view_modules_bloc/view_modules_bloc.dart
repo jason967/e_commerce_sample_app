@@ -43,7 +43,6 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
       ViewModulesStatus.loading,
       ...collections.skip(1).map((e) => ViewModulesStatus.initial)
     ];
-
     // viewModules 초기화
     final Map<int, List<ViewModule>> initializedViewModules = {
       for (final collection in collections) collection.tabId: []
@@ -68,9 +67,6 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
 
       final Map<int, List<ViewModule>> viewModules = {...state.viewModules};
       viewModules[tabId] = response;
-
-      //TODO call by ref 여기 확인해봐야함
-      // initializedStatus.first = ViewModulesStatus.success;
 
       emit(state.copyWith(
         storeType: storeType,
@@ -110,7 +106,8 @@ class ViewModulesBloc extends Bloc<ViewModulesEvent, ViewModulesState> {
         GetViewModulesByStoreTypeAndTabId(storeType: storeType, tabId: tabId),
       );
 
-      List<ViewModulesStatus> statusSuccess = [...state.status]..[tabIndex]=ViewModulesStatus.success;
+      List<ViewModulesStatus> statusSuccess = [...state.status]..[tabIndex] =
+          ViewModulesStatus.success;
 
       viewModules[tabId] = response;
 
